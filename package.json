@@ -1,0 +1,22 @@
+{
+  "name": "finalversion",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon SatoriTest/index.js",
+    "client": "npm start --prefix testapplication",
+    "start:server": "cd server && npm start",
+    "start:dev": "concurrently \"npm run dev\" \"npm run client\""
+    
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.0"
+  },
+  "dependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

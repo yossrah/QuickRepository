@@ -1,0 +1,39 @@
+ .App {
+  text-align: center;
+} 
+
+.Layout{
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+}
+.Header{
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 20px 4px 12px;
+  border-bottom: 0.6px solid rgb(0,0,0,0.15);
+
+}
+.custom-menu .ant-menu-item {
+  color: #fff; /* Couleur du texte des éléments de menu en mode sombre */
+}
+
+.custom-menu .ant-menu-item-selected {
+  background-color: #1890ff; /* Couleur de fond de l'élément de menu sélectionné en mode sombre */
+}
+/* if u want to enlove le padding */
+.PageContent{
+padding-left: 12px; 
+padding-top: 12px;
+margin: auto;
+
+}
+.SideMenuandContent{
+  display: flex;
+  flex: 1;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
