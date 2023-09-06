@@ -10,6 +10,7 @@ import Chip from '@mui/material/Chip';
 import FaceIcon from '@mui/icons-material/Face';
 
 const RowTable=({_id,name,lastname,phone,author,email,date,subcategorieId,isActive,roleId,index,image,onClick,handleDelete,handleUpdate,handlePush,handlePull})=> {
+  // console.log(`Image URL: http://localhost:3001/uploads/${image}`);
   return (
     <React.Fragment>
     <StyledTableRow style={{ width: '50px' }} key={_id}>
@@ -33,7 +34,7 @@ const RowTable=({_id,name,lastname,phone,author,email,date,subcategorieId,isActi
               {roleId ? <StyledTableCell align="right">{roleId }</StyledTableCell>:null }
               {date ? <StyledTableCell align="right">{date }</StyledTableCell>:null }
               {image ?
-                <StyledTableCell align="right"><img src={`http://localhost:3001/uploads/${image}`} alt="Category Image" style={{ width: '30px', height: '30px' }}/>
+                <StyledTableCell align="right"><img src={`/uploads/${image}`} alt="Category" style={{ width: '30px', height: '30px' }}/>
               </StyledTableCell>:null }
               {subcategorieId ? <StyledTableCell align="right">{subcategorieId}</StyledTableCell>: null }
               <StyledTableCell align="right">

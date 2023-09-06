@@ -5,13 +5,15 @@ import AddIcon from '@mui/icons-material/Add';
 import Box from '@mui/material/Box';import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Title from '../../components/Title';
 import InputField from '../../components/InputField';
-import FormControl from '@mui/material/FormControl';
 import ButtonSubmit from '../../components/ButtonSubmit';
+import CloseIcon from '@mui/icons-material/Close';
+import {IconButton} from '@mui/material';
 import AvatarUI from '../../components/AvatarUI';
 import { useNavigate } from 'react-router-dom'
 import { CreateCategory } from '../../redux/actions/categoryAction';
+import { btStyleWithMargin } from '../../components/Styles';
 const theme = createTheme();
-const btStyle={ margin:'20px 0',backgroundColor:'#1e81b0'}
+
 const AddCategory=({onClose})=> {
   const [form,setForm]=useState({})
   const errors=useSelector((state)=>state.errors)
@@ -33,6 +35,9 @@ const AddCategory=({onClose})=> {
     <ThemeProvider theme={theme}>
       <Grid container component="main" sx={{ height: '100vh',width:'300px' }}>
       <Grid item xs={12} sm={8} md={12} component={Paper}  square>
+      <IconButton onClick={()=>onClose()}>
+      <CloseIcon/>
+      </IconButton>
       <Box
       sx={{
        my: 8,
@@ -46,21 +51,18 @@ const AddCategory=({onClose})=> {
            <Title title="New category"></Title>
           </Grid>
            <Box component="form" noValidate sx={{ mt: 1 }} onSubmit={onSubmit}>
-           <InputField  
-           name="name" label="Category" type="text" 
-           variant='standard' 
-           onChangeHandler={onChangeHandler}  autoFocus="autofocus" errors={errors? errors.name:null} >
-           </InputField>
-           <Box sx={{ minWidth: 120 }}>
-               <FormControl fullWidth variant="standard">
-               </FormControl>
+             <InputField  
+              name="name" label="Category" type="text" 
+              variant='standard' 
+              onChangeHandler={onChangeHandler}  
+              autoFocus="autofocus" errors={errors? errors.name:null} >
+             </InputField>
+            <ButtonSubmit type="submit" style={btStyleWithMargin} variant="contained" title="Save"></ButtonSubmit>
+            <ButtonSubmit type="reset" style={btStyleWithMargin}  variant="contained" title="Reset"></ButtonSubmit>
            </Box>
-           <ButtonSubmit type="submit" style={btStyle} variant="contained" title="Save"></ButtonSubmit>
-           <ButtonSubmit type="reset" style={btStyle}  variant="contained" title="Reset"></ButtonSubmit>
-           </Box>
-           </Box>
-          </Grid>
-         </Grid>
+          </Box>
+        </Grid>
+        </Grid>
        
       </ThemeProvider>
     </React.Fragment>

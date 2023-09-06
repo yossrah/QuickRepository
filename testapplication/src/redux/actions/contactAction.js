@@ -24,7 +24,7 @@ export const CreateComment=(form,navigate)=>dispatch=>{
             icon: 'success',
             title: 'Saved successfully'
           })
-          navigate('/layoutAnt/viewcomments')
+          navigate('/layout/viewcomments')
     }).catch(err=>{
         dispatch({
             type: 'SET_CONTACTS_FAILURE',
@@ -32,15 +32,17 @@ export const CreateComment=(form,navigate)=>dispatch=>{
         })
     })
 }
-export const GetComments=()=>dispatch=>{ 
+export const GetComments=(page,limit)=>dispatch=>{ 
     dispatch({
         type: 'SET_CONTACT_REQUEST',
         })
-    axios.get('/contact/all').then(res=>{
+    axios.get(`/contact/all?page=${page}&limit=${limit}`).then(res=>{
         console.log(res.data)
         dispatch({
             type:'SET_CONTACTS_SUCCESS',
-            payload:res.data.mssgs
+            payload:{ messages: res?.data.mssgs,
+                      previous: res?.data.previous,
+                      next: res?.data.next}
         })
     }).catch(err=>{
         dispatch({

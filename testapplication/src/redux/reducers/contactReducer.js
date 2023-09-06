@@ -2,6 +2,8 @@ const initialState={
     isLoading:false,
     message:{},
     messages:[],
+    next:{},
+    previous:{},
     error: null,
 }
 const contactReducer=(state=initialState,action)=>{
@@ -10,15 +12,17 @@ const contactReducer=(state=initialState,action)=>{
                         return{
                             ...state,
                             isLoading:true,
-                            messages:[],
-                            
+                            // messages:[],
                             error:null}
     case 'SET_CONTACTS_SUCCESS':
                         return{
                             ...state,
                             isLoading:false,
                             // messages:action.payload,
-                            messages:state.messages.concat(action.payload),
+                            // messages:state.messages.concat(action.payload),
+                            messages:action?.payload.messages,
+                            next:action?.payload.next,
+                            previous:action?.payload.previous,
                             error:null}
     case 'SET_CONTACTS_FAILURE':
                         return{
@@ -32,7 +36,7 @@ const contactReducer=(state=initialState,action)=>{
         ...state,
          isLoading:false,
          message:action.payload,
-        //  messages:state.messages.concat(action.payload)
+         messages:state.messages.concat(action.payload)
     }
     case 'DELETE_CONTACT':
         return{

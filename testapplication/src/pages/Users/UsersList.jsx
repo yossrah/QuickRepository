@@ -1,8 +1,10 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect,useState } from 'react';
 import { useDispatch,useSelector} from 'react-redux'
 import Table from '@mui/material/Table';
 import Swal from 'sweetalert2'
 import TableBody from '@mui/material/TableBody';
+import TableHeading from '../../components/TableHead';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
@@ -48,7 +50,7 @@ const handleChangeRole = (event) => {
     dispatch(GetProfiles())
   }
   else{
-    console.log('eveeeeeeeeeeeeeeeeeent',event.target.value)
+    // console.log('eveeeeeeeeeeeeeeeeeent',event.target.value)
     dispatch(GetUserByRole(event.target.value))
   }
   
@@ -78,7 +80,7 @@ const handleChangeRole = (event) => {
     handleOpen()
     dispatch(GetRoles())
     dispatch(GetProfiles(page + 1, rowsPerPage));
-  }, []);
+  }, [dispatch, page, rowsPerPage]);
   const handleNext = () => {
     if (next) {
       // Fetch the next page when the "Next" button is clicked
@@ -118,7 +120,7 @@ const handleChangeRole = (event) => {
      <div style={{ color: '#1a237e', }}>
        <Title title="Total users"></Title>
      </div>
-     <Button variant="contained" startIcon={<AddIcon/>} color='primary' onClick={()=>{navigate('/layoutAnt/register')}} sx={{ mt: 2, mb: 1 , }} >
+     <Button variant="contained" startIcon={<AddIcon/>} color='primary' onClick={()=>{navigate('/layout/register')}} sx={{ mt: 2, mb: 1 , }} >
                 Add new member
     </Button>
     </div>
@@ -131,19 +133,8 @@ const handleChangeRole = (event) => {
    </div>
     <TableContainer component={Paper}  sx={{ marginTop: '40px' }} style={{borderRadius:10}} >
       <Table sx={{ minWidth: 1200 }} aria-label="customized table" >
-        <TableHead>
-          <TableRow>
-          <StyledTableCell><Avatar style={{height:'30px',width:'30px'}}><SupervisedUserCircleIcon/></Avatar></StyledTableCell>
-            <StyledTableCell>Name</StyledTableCell>
-            <StyledTableCell align="right">Lastname</StyledTableCell>
-            <StyledTableCell align="right">Email</StyledTableCell>
-            <StyledTableCell align="right">Phone</StyledTableCell>
-            <StyledTableCell align="right">Status</StyledTableCell>
-            <StyledTableCell align="right">Role</StyledTableCell>
-            <StyledTableCell align="right">Created At</StyledTableCell>
-            <StyledTableCell align="right">Action</StyledTableCell>
-          </TableRow>
-        </TableHead>
+      <TableHeading name="Name" lastname="Lastname" avatar=<SupervisedUserCircleIcon/> email="Email"
+       phone="Phone" status="Status" role="Role" date="Created At"></TableHeading>
         <TableBody>
          {filteredprofiles?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
           .map((user,index) => (
@@ -156,7 +147,7 @@ const handleChangeRole = (event) => {
             email={user.email}
             date={user.createdAt}
             handleDelete={()=>HandleDelete(user._id)}
-            handleUpdate={()=>navigate(`/layoutAnt/update/${user._id}`)}
+            handleUpdate={()=>navigate(`/layout/update/${user._id}`)}
             roleId={user.roleId ? user.roleId.nom : '-'}
             isActive={user.isActive? "Active" : "Not Active"}>
             </RowTable>
@@ -164,12 +155,10 @@ const handleChangeRole = (event) => {
         </TableBody>
       </Table>
     </TableContainer>
-    <Button onClick={handlePrevious} disabled={!previous} >
-    Previous
-  </Button>
-  <Button onClick={handleNext} disabled={!next}>
-    Next
-  </Button>
+    <div style={{ display: 'flex',justifyContent: 'flex-end',  alignItems: 'center' }}>
+         <Button onClick={handlePrevious} disabled={!previous} >Previous</Button>
+         <Button onClick={handleNext} disabled={!next}>Next</Button>
+         </div>
     <TablePagination
         rowsPerPageOptions={[5, 10, 100]}
         component="div"

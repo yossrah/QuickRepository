@@ -1,6 +1,5 @@
 import React from 'react'
 import { Badge, Image, Space } from 'antd'
-import EmailIcon from '@mui/icons-material/Email';
 import logo from "../../../images/logoo.png"
 import { Paper } from '@mui/material';
 import Grid from '@mui/material/Grid';
@@ -13,21 +12,18 @@ const theme = createTheme();
 function Header({user}) {
   const navigate=useNavigate()
   const location = useLocation();
-  console.log('location',location)
-  const isSignInPage = location.pathname === '/login';
+  // console.log('location',location)
+  // const isSignInPage = location.pathname === '/login';
   const isContact = location.pathname === '/contact';
   return (
     <ThemeProvider theme={theme}>
-   
     <Grid item  xs={12} sm={12} md={12} component={Paper}>
     <div className="Header" >
     <Image
     width={150}
     src={logo}>
     </Image>
-    
     <Space style={{marginRight:'30px'}}>
-    
     {!user?
       <>
       {isContact?<Button variant="outlined" onClick={()=>navigate('/login')}>Login</Button>:<Button variant="outlined" onClick={()=>navigate('/contact')}>contact us</Button>}

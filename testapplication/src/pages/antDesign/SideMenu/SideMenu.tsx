@@ -2,40 +2,29 @@ import React from 'react'
 import { useState } from 'react';
 import {useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import {
-  GoldOutlined ,
-  ContainerOutlined ,
-  FolderOutlined ,
-  NodeIndexOutlined ,
- AppstoreOutlined,
-  SafetyOutlined ,
-  PartitionOutlined,
-  SubnodeOutlined ,
-    TeamOutlined,
-    UserOutlined,
-    CodeSandboxOutlined 
-  } from '@ant-design/icons';
+import {GoldOutlined ,ContainerOutlined ,FolderOutlined ,NodeIndexOutlined ,AppstoreOutlined,
+        SafetyOutlined ,PartitionOutlined,SubnodeOutlined ,TeamOutlined,UserOutlined,
+        CodeSandboxOutlined } from '@ant-design/icons';
 import { Layout, Menu, theme } from 'antd';
 
 const { Sider } = Layout;
 interface AuthState {
   isConnected: boolean;
   isLoading: boolean;
-  user: { [key: string]: any }; // Use a more specific type for the 'user' data if possible
-  errors: any; // Use a more specific type for the 'errors' data if possible
+  user: { [key: string]: any };
+  errors: any; 
 }
 
 // Define the root state interface including all reducers' states
 interface RootState {
   auth: AuthState;
-  // Add other state properties from other reducers if needed
 }
 interface MenuItem {
   key: string;
   icon?: React.ReactNode;
   children?: MenuItem[];
   label: React.ReactNode;
-  role?: string; // Add a 'role' property for filtering
+  role?: MenuItem[]; // Add a 'role' property for filtering
 }
 // type MenuItem = Required<MenuProps>['items'][number];
 function getItem(
@@ -57,10 +46,10 @@ function getItem(
 }
 const items: MenuItem[] = [
   
-  getItem('Dashbord', '', <AppstoreOutlined/>,'Admin'),
-  getItem('WorkSpace', 'workspace', <CodeSandboxOutlined />),
-  getItem('forum', 'viewcomments' ,<FolderOutlined />,'Admin'||'Developer'),
-  getItem('User', 'sub1', <UserOutlined />,'Admin'||'Team leader', [
+  // getItem('Dashbord', '', <AppstoreOutlined/>,'Admin'),
+  // getItem('WorkSpace', 'workspace', <CodeSandboxOutlined />,'Tester'),
+  getItem('forum', 'viewcomments' ,<FolderOutlined />,'Tester',),
+  getItem('User', 'sub1', <UserOutlined />,'Admin', [
     getItem('User List', 'userlist',<TeamOutlined />),
     getItem('Roles', 'roles',<SafetyOutlined />),
   ],),
@@ -74,14 +63,22 @@ const items: MenuItem[] = [
 
 const SideMenu: React.FC = () => {
   const { user } = useSelector((state: RootState) => state.auth);
-  console.log('role',user.roleId?.nom)
+  // console.log('role',user.roleId?.nom)
   const [collapsed, setCollapsed] = useState(false);
   const {
     token: { colorBgContainer },
   } = theme.useToken();
  const navigate=useNavigate()
  const filteredItems = items.filter(item => !item.role || item.role === user?.roleId?.nom);
-
+ const hasAdminRole = user?.roleId?.nom === 'Admin';
+ const hasTesterRole = user?.roleId?.nom === 'Tester';
+ const hasTeamleadRole = user?.roleId?.nom === 'Team lead';
+  if (hasAdminRole || hasTesterRole) {
+    filteredItems.push(getItem('WorkSpace', 'workspace', <CodeSandboxOutlined />, ''));
+  }
+  if (hasAdminRole || hasTeamleadRole) {
+    filteredItems.unshift(getItem('Dashbord', '', <AppstoreOutlined/>,''),);
+  }
   return (
     <Layout  style={{ minHeight: '100vh' }}>
     <Sider collapsible  collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>

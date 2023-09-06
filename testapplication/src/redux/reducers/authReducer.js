@@ -28,7 +28,8 @@ export default function(state=initialState,action){
             case 'SET_PWD_FAILURE':
             return{
                 ...state,
-                isLoading:false
+                isLoading:false,
+                errors:action.payload
             }
         case 'SET_AUTH_SUCCESS':
             return{

@@ -9,6 +9,7 @@ import DashbordCard from '../../components/controls/DashbordCard'
 import RecentWorkflows from '../recentWorkflows/RecentWorkflows'
 import {PartitionOutlined,SubnodeOutlined ,TeamOutlined,CommentOutlined} from '@ant-design/icons';
 import Forum from '../forums/Forum';
+import { GetNumberCategories } from '../../redux/actions/categoryAction';
 
 const DashbordPage=()=> {
   const typostyle={marginTop: '25px',color:'#1a237e' }
@@ -18,6 +19,8 @@ const DashbordPage=()=> {
   const {component}=useSelector((state)=>state.components)
   const isloading=useSelector((state)=>state.components.loading)
   const {profile,loading}=useSelector((state)=>state.users)
+  const {category} = useSelector((state)=>state.categorie)
+  const load= useSelector((state)=>state.categorie.isLoading)
   const List=[
     {value:flow,loading:loader,title:" Total Workflows",icon:<PartitionOutlined 
     style={{color:'#e65100',backgroundColor:'#ffe0b2',borderRadius:20,fontSize:24, padding:8}}/>},
@@ -27,12 +30,16 @@ const DashbordPage=()=> {
     icon:<TeamOutlined style={{ color:'#aa00ff',backgroundColor:'#ea80fc',borderRadius:20,fontSize:24,padding:8}}/>},
     {value:message,loading:isLoading,title:" Total Interactions",
     icon:<CommentOutlined style={{color:'#1a237e',backgroundColor:'#82b1ff',borderRadius:20,fontSize:24, padding:8}}/>},
+    {value:category,loading:load,title:" Total categories",icon:<PartitionOutlined 
+    style={{color:'#e65100',backgroundColor:'#ffe0b2',borderRadius:20,fontSize:24, padding:8}}/>},
+    
   ]
   useEffect(() => {
     dispatch(GetNumberFlows())
       dispatch(GetNumberActions())
       dispatch(GetNumberUsers())
       dispatch(GetNumberPosts())
+      dispatch(GetNumberCategories())
    }, []);
   return (
     <React.Fragment>

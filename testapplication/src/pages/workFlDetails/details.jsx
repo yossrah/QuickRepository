@@ -75,12 +75,15 @@ const Details=({onClose,id})=> {
               <InputField value={form.task} name="task"
               variant='filled' type="text"  onChangeHandler={onChangeHandler} autoFocus="autofocus" >
               </InputField>
-              <h6>Node List:</h6>
               {form.nodesList?.map((node, index) => (
+                <>
+                <h6>Node :</h6>
                 <div key={index}>
-                  <p>{node.data?.name}  {node.data?.icon?<img src={`http://localhost:3001/uploads/${node.data.icon}`} alt="Category Image" style={{ width: '20px', height: '20px' }}/>:null}</p>
+                  <p>{node.data?.name} 
+                  {node.data?.icon?<img src={`/uploads/${node.data.icon}`} alt="Category" style={{ width: '20px', height: '20px' }}/>:null}</p>
                   
                 </div>
+                </>
               ))}
            <Box sx={{ my: 2,py:2,display: 'flex',flexDirection: 'column',alignItems: 'center',}}>
            <ButtonSubmit type="submit" style={btStyle} variant="contained" title="Update"></ButtonSubmit>

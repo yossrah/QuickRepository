@@ -24,7 +24,7 @@ export const Registration=(form,navigate)=>dispatch=>{ //async action uses redux
           icon: 'success',
           title: 'Signed in successfully'
         })
-        navigate('/layoutAnt/userlist')
+        navigate('/layout/userlist')
     }).catch(err=>{
         dispatch({
             type: ERRORS,
@@ -55,7 +55,7 @@ export const LoginAction=(form,navigate)=>dispatch=>{
           })
         // dispatch(setUser(decode))
         SetAuth(token)
-        navigate('/layoutant')
+        navigate('/layout')
         const Toast = Swal.mixin({
           toast: true,
           position: 'center-end',

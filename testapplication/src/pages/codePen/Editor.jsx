@@ -24,12 +24,12 @@ function Editor(props) {
   
   //-------------------------------------drawer----------------------------------------------------------
   const [state, setState] =useState({right: false });
-  const toggleDrawer = (anchor, open) => (event) => {
-    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
-      return;
-    }
-    setState({ ...state, [anchor]: open });
-  };
+  // const toggleDrawer = (anchor, open) => (event) => {
+  //   if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+  //     return;
+  //   }
+  //   setState({ ...state, [anchor]: open });
+  // };
   const onClose=()=>{
     setState({ ...state, 'right': false });
   }
@@ -91,10 +91,8 @@ useEffect(() => {
 useEffect(() => {
   markDriverKeyword();
 }, [codeValue]);
-
-    // console.log('coooode',code)
-
-  const [copied, setCopied] = useState(false);
+  // console.log('coooode',code)
+    const [copied, setCopied] = useState(false);
     const [theme, setTheme] = useState('dark');
     if (typeof codeValue === 'object' && Object.keys(codeValue).length === 0) {
       return <div>
@@ -118,16 +116,12 @@ useEffect(() => {
     }=props
     const handleChange=(editor,data,codeValue)=>{
          onChange(codeValue)
-        setCodeValue(codeValue);
-
-    }
+        setCodeValue(codeValue);}
     const HandleShare=()=>{
       setState({ ...state, 'right': true })
-      props.HandleClose()
-    }
+      props.HandleClose()}
   return (
     <>
-    
     {loader ?
       <CircularProgress  />:
       <>
@@ -163,21 +157,13 @@ useEffect(() => {
             //  styleActiveLine: true, // Highlight the active line
             // rulers: [{ color: '#ccc', column: 80 }], // Display a ruler at column 80
             autoRefresh: true, // Enable auto-refresh for dynamic content
-
         }
-
       }
-      editorDidMount={(editor) => {
-        codeMirrorRef.current = editor;
-      }}
-      >
+      editorDidMount={(editor) => {codeMirrorRef.current = editor;}}>
       </Controlled>
     </div>
     </>}
-    <Swipeable key='right'
-    open={state['right']} 
-    anchor='right'
-    onClose={onClose}>
+    <Swipeable key='right' open={state['right']} anchor='right' onClose={onClose}>
     <ShareCode onClose={onClose} codeValue={codeValue}/>
     </Swipeable>
     </>

@@ -19,6 +19,11 @@ const initialState={
                   isloading:false,
                   node:action.payload,
               }
+      case 'RESET_NODE':
+        return{
+          ...state,
+          node:{}
+      }
       case 'SET_NODE_FAILURE':
                 return{
                     ...state,

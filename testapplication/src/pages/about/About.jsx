@@ -18,16 +18,21 @@ const navigate=useNavigate()
          <Box
             sx={{
               my: 30,
-              mx: 0,
+               mx: 0,
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
             }}
           >
-           <Grid sx={{ marginLeft: '30px' }} align='justify' >
+           <Grid  align='justify' >
+           <div>
+            
+            <div style={{marginLeft:'30px'}}>
             <h1 style={{ borderBottom: 'none' }}>Welcome to QuickTest</h1>
             <Title title="Continuously generate automated testing scripts for Android applications ." ></Title>
-           </Grid>
+            </div> 
+            </div>
+            </Grid>
            <Box component="form" noValidate sx={{ mt: 1 }} >
            <ColorButton style={{borderRadius:60, fontSize: '1.1rem', // Augmenter la taille de la police
                }} 

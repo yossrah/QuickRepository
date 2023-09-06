@@ -19,7 +19,7 @@ import Header from '../antDesign/Header/Header';
 import { btStyle } from '../../components/Styles';
 const theme = createTheme();        
 const ChangePwd = ({ changePassword }) => {
-  const {isLoading}=useSelector(state=>state.auth)
+  const {isLoading,errors}=useSelector(state=>state.auth)
   const { token } = useParams();
   const [formData, setFormData] = useState({
     password: '',
@@ -48,7 +48,7 @@ const ChangePwd = ({ changePassword }) => {
       setToken('');
     }
   };
-
+  // console.log('errooooooooooooors',errors)
   return (
    <React.Fragment>
     <ThemeProvider theme={theme}>
@@ -82,7 +82,8 @@ const ChangePwd = ({ changePassword }) => {
               name="password" 
               label="Password" 
               type="password"  
-              onChangeHandler={handleChange} >
+              onChangeHandler={handleChange}
+               >
             </InputField>
            <InputField
               variant='filled'  

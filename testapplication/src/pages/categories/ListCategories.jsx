@@ -7,16 +7,15 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import TableHeading from '../../components/TableHead';
 import { GetCategories,DeleteCategory } from '../../redux/actions/categoryAction';
 import Button from '@mui/material/Button';
 import Swal from 'sweetalert2';
 import RowTable from '../../components/RowTable';
-import Modal from '../../components/controls/Modal';
 import AddCategory from './AddCategory';
 import { Avatar } from '@mui/material';
 import CategoryIcon from '@mui/icons-material/Category';
 import EditCategory from './EditCategory';
-import PushSubCategorie from './PushSubCategory';
 import Swipeable from '../../components/swipeable';
 import { StyledTableCell } from '../../components/Styles';
 import TablePagination from '@mui/material/TablePagination';
@@ -25,21 +24,21 @@ import SearchField from '../../components/controls/SearchField';
 import Title from '../../components/Title';
 function CategoriesList() {
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] =useState(5);
   const [searchTerm, setSearchTerm] = useState('');
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
-
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-  const {categories}=useSelector((state)=>state.categorie)
+  const {categories}=useSelector((state)=>state.categorie)?? [];
   const {isLoading}=useSelector((state)=>state.categorie)
-  const filteredcategory = categories.filter((category) =>
-  category.name.toLowerCase().includes(searchTerm.toLowerCase())
-);
+  const filteredcategory = categories?.filter((category) => category?.name) // Check if category and its name are defined
+  .filter((category) =>
+    category.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
   //<----------------------------------------------------Drawer----------------------------------->
   const [state, setState] =useState({right: false });
   const [edit, setEdit] =useState({right: false });
@@ -63,20 +62,8 @@ function CategoriesList() {
      setEdit({ ...edit, [anchor]: open });
   };
   //<----------------------------------------------------Drawer------------------------------------>
-  const [openPopup, setOpenPopup] = useState(false);
-  const [openModal, setOpenModal] = useState(false);
-  const [openPullModal, setOpenPullModal] = useState(false);
- 
-  const handleClose = () => {
-    setOpenPopup(false);
-  };
   const [id, setId]=useState()
-  const HandlePush=(_id)=>{
-    setOpenModal(true);
-    setId(_id)}
-  const HandlePull=(_id)=>{
-      setOpenPullModal(true);
-      setId(_id)}
+ 
   const dispatch=useDispatch()
   const HandleDelete=(_id)=>{
     console.log(_id)
@@ -96,11 +83,9 @@ function CategoriesList() {
           'success'
         )
         dispatch(DeleteCategory(_id))
-        // console.log('user',_id)
       }
     })
    }
-   console.log('categories',categories)
   useEffect(() => {
    dispatch(GetCategories()) ;
    }, []);
@@ -111,25 +96,16 @@ function CategoriesList() {
     <div style={{ color: '#1a237e', }}>
      <Title title="Categories list"></Title>
      </div> 
-     
-    <Button variant="contained" startIcon={<AddIcon/>} color='primary' onClick={toggleDrawer('right', true)} sx={{ mt: 3, mb: 1 , }} >
-                Add a category
-    </Button>
+     <Button variant="contained" startIcon={<AddIcon/>} color='primary' onClick={toggleDrawer('right', true)} sx={{ mt: 3, mb: 1 , }} >Add a category</Button>
     </div>
     <h6 style={{ color: '#0d47a1',marginBottom:'20px'}}>Search by category name </h6>
     <SearchField value={searchTerm} placeholder="Search..."
-          onChangeHandler={(e) => setSearchTerm(e.target.value)}
-          style={{ marginTop: '20px', }}></SearchField>
+          onChangeHandler={(e) => setSearchTerm(e.target.value)} style={{ marginTop: '20px', }}>
+    </SearchField>
     
     <TableContainer component={Paper}  sx={{ marginTop: '40px', }} style={{borderRadius:10}}>
       <Table sx={{ minWidth: 1200 }} aria-label="customized table">
-        <TableHead>
-          <TableRow>
-          <StyledTableCell><Avatar style={{height:'30px',width:'30px'}}><CategoryIcon/></Avatar></StyledTableCell>
-            <StyledTableCell>Category</StyledTableCell>
-            <StyledTableCell align="right">Action</StyledTableCell>
-          </TableRow>
-        </TableHead>
+      <TableHeading category="Category" avatar=<CategoryIcon/>></TableHeading>
         <TableBody>
           {filteredcategory?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map((category,index) => (
@@ -137,12 +113,9 @@ function CategoriesList() {
             index={index}
             _id={category._id} 
             name={category.name}
-            // image={category.image? category.image:'-'}
-            children=<EditCategory id={category._id} handleClose={handleClose} />
+            children=<EditCategory id={category._id}/>
             handleUpdate={toggleEdit('right', true,category._id)}
             handleDelete={()=>{HandleDelete(category._id)}}
-            // handlePush={()=>{HandlePush(category._id)}}
-            // handlePull={()=>{HandlePull(category._id)}}
              >
             </RowTable>
           ))}
@@ -158,9 +131,6 @@ function CategoriesList() {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
-    <Modal title={"Push Category"} id={id} openPopup={openModal} setOpenPopup={setOpenModal}>
-     <PushSubCategorie id={id}/>
-    </Modal>
     <Swipeable key='right'
     open={state['right']} 
     anchor='right'

@@ -1,15 +1,15 @@
 import React, { useEffect ,useState} from 'react';
 import { useDispatch,useSelector} from 'react-redux'
-import { DeleteParam } from '../../redux/actions/paramAction';
+import { DeleteParam ,GetParams} from '../../redux/actions/paramAction';
 import AddIcon from '@mui/icons-material/Add';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
+import TableHeading from '../../components/TableHead';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Avatar } from '@mui/material';
-import { GetParams } from '../../redux/actions/paramAction';
 import Button from '@mui/material/Button';
 import PermDataSettingIcon from '@mui/icons-material/PermDataSetting';
 import RowTable from '../../components/RowTable';
@@ -34,7 +34,7 @@ const ParamsList=()=> {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-  const {params,loading}=useSelector((state)=>state.params)
+  const {params,loading,next,previous}=useSelector((state)=>state.params)
   const filteredparams = params.filter((component) => {
     if (component.nom && typeof component.nom === 'string') {
       return component.nom.toLowerCase().includes(searchTerm.toLowerCase());
@@ -64,6 +64,7 @@ const ParamsList=()=> {
      setEdit({ ...edit, [anchor]: open });
   };
   //<----------------------------------------------------Drawer------------------------------------>
+  
   const dispatch=useDispatch()
   const HandleDelete=(_id)=>{
     Swal.fire({
@@ -87,8 +88,21 @@ const ParamsList=()=> {
    }
    const [id, setId]=useState()
   useEffect(() => {
-   dispatch(GetParams()) ;
-  }, []);
+   dispatch(GetParams(page + 1, rowsPerPage)) ;
+  }, [dispatch, page, rowsPerPage]);
+  const handleNext = () => {
+    if (next) {
+      // Fetch the next page when the "Next" button is clicked
+      dispatch(GetParams(next.page, next.limit));
+    }
+  };
+
+  const handlePrevious = () => {
+    if (previous) {
+      // Fetch the previous page when the "Previous" button is clicked
+      dispatch(GetParams(previous.page, previous.limit));
+    }
+  };
   return (
     <React.Fragment>
     <div style={{ marginLeft:'40px' }}>
@@ -105,15 +119,7 @@ const ParamsList=()=> {
            style={{ marginTop: '20px' }}></SearchField>
     <TableContainer component={Paper}  style={{borderRadius:10}} sx={{ marginTop: '40px' }}>
       <Table sx={{ minWidth: 1200 }} aria-label="customized table">
-        <TableHead>
-          <TableRow>
-          <StyledTableCell><Avatar style={{height:'30px',width:'30px'}}><PermDataSettingIcon/></Avatar></StyledTableCell>
-            
-            <StyledTableCell>Param</StyledTableCell>
-            <StyledTableCell>Value</StyledTableCell>
-            <StyledTableCell align="right">Actions</StyledTableCell>
-          </TableRow>
-        </TableHead>
+      <TableHeading name="Param" lastname="Value" avatar=<PermDataSettingIcon/>></TableHeading>
         <TableBody>
           {filteredparams?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((param,index) => (
             <RowTable key={param._id} 
@@ -129,8 +135,12 @@ const ParamsList=()=> {
         </TableBody>
       </Table>
     </TableContainer>
+    <div style={{ display: 'flex',justifyContent: 'flex-end',  alignItems: 'center' }}>
+         <Button onClick={handlePrevious} disabled={!previous} >Previous</Button>
+         <Button onClick={handleNext} disabled={!next}>Next</Button>
+         </div>
     <TablePagination
-    rowsPerPageOptions={[5, 10, 100]}
+    rowsPerPageOptions={[10, 20, 100]}
     component="div"
     count={params.length}
     rowsPerPage={rowsPerPage}

@@ -6,28 +6,30 @@ export const CreateParam=(form,navigate)=>dispatch=>{
         type: 'SET_PARAM_REQUEST',
     })
     axios.post('/param/addParam',form).then(res=>{
-        console.log('res',res.data)
+        // console.log('res',res.data)
         dispatch({
             type: SET_PARAM,
             payload:res.data.param
         })
-        console.log("--------------------10")
+        // console.log("--------------------10")
     }).catch(err=>{
         dispatch({
             type: ERRORS,
             payload:err.response.data
         })
-        console.log("--------------------16")
+        // console.log("--------------------16")
     })
 }
-export const GetParams=()=>dispatch=>{ 
+export const GetParams=(page,limit)=>dispatch=>{ 
     dispatch({
         type: 'SET_PARAM_REQUEST',
     })
-    axios.get('/param/getAllParams').then(res=>{
+    axios.get(`/param/getAllParams?page=${page}&limit=${limit}`).then(res=>{
         dispatch({
             type: SET_PARAMS,
-            payload:res.data.data
+            payload:{ params:res?.data.data,
+                previous:res?.data.previous,
+                next:res?.data.next}
         })
     }).catch(err=>{
         dispatch({
@@ -44,7 +46,7 @@ export const GetParamsbyId=(paramIds)=>dispatch=>{
     // console.log('--------------------------32')
     axios.post('/param/getparamsbyid',{paramIds}).then(res=>{
         dispatch({
-            type: SET_PARAMS,
+            type: 'SET_PARAMS_SUCCESS',
             payload:res.data.data
         })
         // console.log('-------------------------38',res.data.data)

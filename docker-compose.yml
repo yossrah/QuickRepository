@@ -1,0 +1,35 @@
+version: '3'
+services:
+  api:
+    image: node:18.14.0
+    container_name: api
+    working_dir: /app
+    command: >
+      sh -c "npm install bcrypt && npm run devStart"
+    ports:
+      - "3001:3001"
+    volumes:
+      - "./SatoriTest/:/app"
+      - /app/node_modules
+  client:
+    image: node:18.14.0
+    container_name: client
+    working_dir: /src
+    command:  npm start
+    ports:
+      - "3000:3000"
+    volumes:
+      - "./testapplication/:/src"
+    
+ 
+#   mongo:
+#     image: mongo
+#     restart: always
+#     environment:
+#       MONGO_INITDB_ROOT_USERNAME: quickTest
+#       MONGO_INITDB_ROOT_PASSWORD: quickTest
+#     volumes:
+#       - db-data:/data/db
+
+# volumes:
+#   db-data:

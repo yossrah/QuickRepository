@@ -149,7 +149,7 @@ export const UpdateFlow=(form,_id,navigate)=>async (dispatch)=>{
               payload:res.data.data
           })
       })
-      navigate('/layoutAnt/flows')
+      navigate('/layout/flows')
       // console.log('-------------------150')
     }catch (error) {
       dispatch({
@@ -245,7 +245,9 @@ export const GetFlowByuser=(_id)=>{
               await axios.get(`/workflow/getworkflowsbyuser/${_id}`).then(res=>{
                   dispatch({
                       type: 'SET_FLOWS_SUCCESS',
-                      payload: {flows:res?.data.workflows}
+                      payload: {flows:res?.data.workflows,
+                                previous:res?.data.previous,
+                                next:res?.data.next}
                   })
               })
           }

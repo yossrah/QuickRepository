@@ -8,7 +8,7 @@ export const CreateRole=(form,navigate)=>dispatch=>{
             type:'CREATE_ROLE_SUCCESS',
             payload:res.data.role
         })
-        navigate('/layoutAnt/roles')
+        navigate('/layout/roles')
     }).catch(err=>{
         dispatch({
             type: 'CREATE_ROLE_FAILURE',

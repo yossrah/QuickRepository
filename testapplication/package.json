@@ -62,7 +62,8 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://127.0.0.1:3001",
+  "proxy": "http://api:3001",
+  
   "devDependencies": {
     "tailwindcss": "^3.3.2"
   }

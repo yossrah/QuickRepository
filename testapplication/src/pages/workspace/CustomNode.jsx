@@ -63,8 +63,8 @@ function CustomNode({ nodeList,data,selected,code,id, ...otherProps }
   const {node}=useSelector((state)=>state.nodes)
   const getNode=(_id)=>{
     dispatch(GetNode(_id))
-    console.log('NODE',node)
-    console.log('NODELIST',nodeList)
+    // console.log('NODE',node)
+    // console.log('NODELIST',nodeList)
    }
   
   const HandleDelete = (id) => {

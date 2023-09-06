@@ -12,6 +12,7 @@ export const ColorButton = styled(Button)(({ theme }) => ({
   },
 }));
 export const btStyle={ margin:'0px 0',backgroundColor:'#1e81b0'} 
+export const btStyleWithMargin={ margin:'20px 0',backgroundColor:'#1e81b0'}
 export const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
       // backgroundColor: theme.palette.primary.main,

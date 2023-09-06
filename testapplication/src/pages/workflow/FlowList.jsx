@@ -3,6 +3,7 @@ import { useDispatch,useSelector} from 'react-redux'
 import { DeleteFlow,GetFlows,GetFlow,GetFlowByuser } from '../../redux/actions/flowActions';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
+import TableHeading from '../../components/TableHead';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
@@ -20,9 +21,6 @@ import FolderIcon from '@mui/icons-material/Folder';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 
-//-----------------------------------Search-------------------------------------------------------
-
-//-----------------------------------Search-------------------------------------------------------
 const FlowsList=()=> {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -40,7 +38,6 @@ const FlowsList=()=> {
   const {loader,previous,next}=useSelector((state)=>state.flows)
   const {flows}=useSelector((state)=>state.flows)
   const {user}=useSelector((state)=>state.auth)
-  console.log('floooooooooooooooo',flows)
   const navigate=useNavigate()
   const filteredFlows = flows.filter((flow) =>
     flow.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -50,18 +47,18 @@ const FlowsList=()=> {
   //<----------------------------------------------------Drawer----------------------------------->
   const [state, setState] =useState({right: false });
   const [edit, setEdit] =useState({right: false });
-  const toggleDrawer = (anchor, open) => (event) => {
-    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
-      return;
-    }
-    setState({ ...state, [anchor]: open });
-  };
+  // const toggleDrawer = (anchor, open) => (event) => {
+  //   if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+  //     return;
+  //   }
+  //   setState({ ...state, [anchor]: open });
+  // };
   const onClose=()=>{
     setState({ ...state, 'right': false });
   }
-  const onCloseEdit=()=>{
-    setEdit({ ...edit, 'right': false });
-  }
+  // const onCloseEdit=()=>{
+  //   setEdit({ ...edit, 'right': false });
+  // }
   const toggleEdit = (anchor, open,_id) => (event) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
@@ -101,7 +98,7 @@ const FlowsList=()=> {
       dispatch(GetFlows(page + 1, rowsPerPage));
     }
     else{
-      dispatch(GetFlowByuser(user.roleId?.id))
+      dispatch(GetFlowByuser(user?.id))
     }
    
   }, [dispatch, page, rowsPerPage]);
@@ -131,17 +128,7 @@ const FlowsList=()=> {
            style={{ marginTop: '20px' }}></SearchField>
     <TableContainer component={Paper}  sx={{ marginTop: '40px' }} style={{borderRadius:10}}>
       <Table sx={{ minWidth: 1200 }} aria-label="customized table">
-        <TableHead>
-          <TableRow>
-          <StyledTableCell><Avatar sx={{ width: 30,
-            height: 30, }}><FolderIcon/></Avatar></StyledTableCell>
-          <StyledTableCell>Workflow</StyledTableCell>
-            <StyledTableCell>Author</StyledTableCell>
-            <StyledTableCell>Email</StyledTableCell>
-            <StyledTableCell>Created At</StyledTableCell>
-            <StyledTableCell align="right">Action</StyledTableCell>
-          </TableRow>
-        </TableHead>
+      <TableHeading name="Workflow" lastname="Author" avatar=<FolderIcon/> email="Email"date="Created At"></TableHeading>
         <TableBody>
           {filteredFlows?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((flow,index) => (
             <RowTable key={flow._id} 
@@ -149,41 +136,29 @@ const FlowsList=()=> {
             name={flow.name}
             index={index}
             author={flow.author ? flow.author.name +' '+ flow.author.lastname : '-'}
+            
             email={flow.author ? flow.author.email : '-'}
             date={flow.createdAt}
             handleDelete={()=>{HandleDelete(flow._id)}} 
-            handleUpdate={()=>navigate(`/layoutAnt/editflow/${flow._id}`)}
+            handleUpdate={()=>navigate(`/layout/editflow/${flow._id}`)}
             >
             </RowTable>
           ))}
         </TableBody>
       </Table>
     </TableContainer>
-    <Button onClick={handlePrevious} disabled={!previous} >
-    Previous
-  </Button>
-  <Button onClick={handleNext} disabled={!next}>
-    Next
-  </Button>
-    <TablePagination
-    rowsPerPageOptions={[5, 10, 100]}
-    component="div"
-    count={flows.length}
-    rowsPerPage={rowsPerPage}
-    page={page}
+    <div style={{ display: 'flex',justifyContent: 'flex-end',  alignItems: 'center' }}>
+    <Button onClick={handlePrevious} disabled={!previous} >Previous</Button>
+    <Button onClick={handleNext} disabled={!next}>Next</Button>
+    </div>
+    <TablePagination rowsPerPageOptions={[5, 10, 100]} component="div" count={flows.length}
+    rowsPerPage={rowsPerPage} page={page}
     onPageChange={handleChangePage}
     onRowsPerPageChange={handleChangeRowsPerPage}
   />
     <BackdropItem open={loader}/>
-    <Swipeable key='right'
-    open={state['right']} 
-    anchor='right'
-    onClose={onClose}>
-    </Swipeable>
-
-    </div>
+    <Swipeable key='right' open={state['right']} anchor='right' onClose={onClose}></Swipeable>
+</div>
   )
 }
-
-  
-  export default FlowsList
+export default FlowsList

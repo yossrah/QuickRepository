@@ -4,6 +4,7 @@ import { DeleteRole } from '../../redux/actions/roleActions';
 import AddIcon from '@mui/icons-material/Add';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
+import TableHeading from '../../components/TableHead';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
@@ -109,13 +110,7 @@ const RolesList=()=> {
            style={{ marginTop: '20px' }}></SearchField>
     <TableContainer component={Paper}  sx={{ marginTop: '40px',  }} style={{borderRadius:10}}>
       <Table sx={{ minWidth: 1200 }} aria-label="customized table">
-        <TableHead>
-          <TableRow>
-          <StyledTableCell><Avatar style={{height:'30px',width:'30px'}}><AdminPanelSettingsIcon/></Avatar></StyledTableCell>
-            <StyledTableCell>Role</StyledTableCell>
-            <StyledTableCell align="right">Action</StyledTableCell>
-          </TableRow>
-        </TableHead>
+      <TableHeading avatar=<AdminPanelSettingsIcon/> role="Role"></TableHeading>
         <TableBody>
           {filteredroles?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map((role,index) => (

@@ -129,3 +129,23 @@ export const PushSubCategory=(id,subCategory)=>async (dispatch)=>{
      })
  })
  }
+ export const GetNumberCategories=()=>{
+    return async (dispatch) => {
+        dispatch({
+          type: 'SET_CATEGORIES_REQUEST',
+          })
+          try{
+            await axios.get('/category/getnumbercategories').then(res=>{
+                dispatch({
+                    type:'SET_CATEGORY_SUCCESS',
+                    payload: res.data.data
+                })
+            })
+          }catch (error) {
+            dispatch({
+              type: 'SET_CATEGORIES_FAILURE',
+              payload:error.response.data
+          })
+          }
+    }
+}

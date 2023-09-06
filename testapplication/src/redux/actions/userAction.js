@@ -95,7 +95,7 @@ export const UpdateUser=(form,_id,navigate)=>dispatch=>{
              type: UPDATE_PROFILE,
              payload: res.data.profile
          })
-         navigate('/layoutAnt/userlist')
+         navigate('/layout/userlist')
      })
      .catch(err=>{
      dispatch({
@@ -171,7 +171,7 @@ export const sendAdminMail= (form) => {
         })
       } catch (error) {
         dispatch({
-          type: 'SET_FLOW_FAILURE',
+          type: 'SET_USER_FAILURE',
           payload:error.response.data
       })
         Swal.fire({

@@ -16,11 +16,13 @@ export default function UserCard({mssg,HandleDelete}) {
     <Card
       variant="outlined"
       sx={{
-        width: '100%',
+        // width: '100%',
         // to make the card resizable
         overflow: 'auto',
         resize: 'horizontal',
         marginBottom: '20px',
+        width: '1150px', // Largeur fixe de la carte
+        
       }}
     >
       <Box
@@ -33,7 +35,7 @@ export default function UserCard({mssg,HandleDelete}) {
       <Avatar sx={{ bgcolor: '#004db7'  ,//'#311b92'
            width: '30px',
            height:'30px'  }} >
-           {mssg?.from[0]}
+           {mssg?.from ? mssg.from[0] : ''}
            </Avatar>
            <div>{mssg?.from}</div>
       </Box>

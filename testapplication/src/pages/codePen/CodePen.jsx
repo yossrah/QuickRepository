@@ -3,7 +3,7 @@ import Editor from './Editor'
 const CodePen=({id,HandleClose})=> {
   // const id = useParams()
   const [java,setJava]=useState('')
-  console.log("codePennnnnnnnnnnn",id)
+  // console.log("codePennnnnnnnnnnn",id)
   return (
     <>
     <div style={{

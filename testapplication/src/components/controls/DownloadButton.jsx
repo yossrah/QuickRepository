@@ -35,8 +35,11 @@ function DownloadButton() {
   };
 
   return (
-    <Panel style={{zIndex:"999"}} position="top-right">
-    <Tooltip title="Download Workflow">
+    <Panel 
+    // style={{zIndex:"999"}}  position="top-left"
+    style={{ position: "absolute", top: "10px", left: "25px", zIndex: "999" }}
+    >
+    <Tooltip title="Export Workflow">
     <IconButton onClick={onClick} color='primary'>
       <DownloadingOutlinedIcon></DownloadingOutlinedIcon>
       </IconButton>

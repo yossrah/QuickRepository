@@ -13,14 +13,15 @@ import { CreateAction } from '../../redux/actions/componentAction';
 import { GetCategories } from '../../redux/actions/categoryAction';
 import { GetParams } from '../../redux/actions/paramAction';
 import MultiSelect from '../../components/MultiSelector';
+import CloseIcon from '@mui/icons-material/Close';
+import {IconButton} from '@mui/material';
+import { btStyleWithMargin } from '../../components/Styles';
 const theme = createTheme();
-const btStyle={ margin:'20px 0',backgroundColor:'#1e81b0'}
 const AddComponent=({onClose})=> {
   const [form,setForm]=useState({})
   const [file,setFile]=useState(null)
   const errors=useSelector((state)=>state.errors)
   const {categories}=useSelector(state=>state.categorie)
-  
   const {params}=useSelector(state=>state.params)
   const navigate=useNavigate()
   const dispatch=useDispatch()
@@ -33,6 +34,7 @@ const AddComponent=({onClose})=> {
     setFile(
     e.target.files[0]
     )}
+    // console.log('fooooooorm',form)
   useEffect(() => {
     dispatch(GetCategories())
     dispatch(GetParams()) }, []);
@@ -42,20 +44,27 @@ const AddComponent=({onClose})=> {
     formData.append('name', form.name);
     formData.append('code', form.code);
     formData.append('categorieId', form.categorieId);
-    formData.append('param', form.param);
+    if (form.param) {
+      // formData.append('param', form.param);
+      for (const paramValue of form.param) {
+        formData.append('param', paramValue);
+      }
+    }  
     formData.append('type', form.type);
     formData.append('icon', file);
-    console.log('formData',formData)
+    // console.log('formData',formData)
     dispatch(CreateAction(formData,navigate))
     onClose()
     
   }
-  console.log('form',form)
   return  ( 
     <React.Fragment>
     <ThemeProvider theme={theme}>
       <Grid container component="main" sx={{ height: '100vh',width:'300px' }}>
       <Grid item xs={12} sm={8} md={12} component={Paper}  square>
+      <IconButton onClick={()=>onClose()}>
+      <CloseIcon/>
+      </IconButton>
       <Box
       sx={{
        my: 8,
@@ -85,8 +94,8 @@ const AddComponent=({onClose})=> {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',}}>
-           <ButtonSubmit style={btStyle} type="submit" variant="contained" title="Create"></ButtonSubmit>
-           <ButtonSubmit style={btStyle} type="reset" variant="contained" title="Reset"></ButtonSubmit>
+           <ButtonSubmit style={btStyleWithMargin} type="submit" variant="contained" title="Create"></ButtonSubmit>
+           <ButtonSubmit style={btStyleWithMargin} type="reset" variant="contained" title="Reset"></ButtonSubmit>
            </Box>
            </Box>
            </Box>

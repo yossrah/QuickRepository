@@ -26,11 +26,11 @@ import 'reactflow/dist/style.css'
 import './index.css';
 import AddFlow from '../workflow/CreateFlow';
 import AddNode from '../workflow/CreateNode';
-import CustomNode from './CustomNode';
 import Details from '../workFlDetails/details';
 import CustomNodeWrapper from './CustomNodeWrapper';
 import ShareCode from '../codePen/ShareCode';
 import CodePen from '../codePen/CodePen';
+import DownloadButton from '../../components/controls/DownloadButton';
 const nodeTypes = {
   custom: CustomNodeWrapper
 };
@@ -57,7 +57,7 @@ const WorkFlow = () => {
   const {node}=useSelector(state=>state.nodes)
   const {loading}=useSelector(state=>state.components)
   const {flow,loader,code}=useSelector((state)=>state.flows)
-  console.log("floooooooooooooow",flow._id)
+  // console.log("floooooooooooooow",flow._id)
   const initialNodes = [
     StartNode ,
   ];
@@ -73,13 +73,13 @@ const WorkFlow = () => {
         setNodes((nds)=> nds.concat(getInitialNodes))
       }
     }, [node._id]);
-    console.log('new',getInitialNodes[node.id])
-    console.log('noooooooooooooooooooooooooooode',getInitialNodes)
+    // console.log('new',getInitialNodes[node.id])
+    // console.log('noooooooooooooooooooooooooooode',getInitialNodes)
     const HandleDelete=(id)=>{
       // const elm=getInitialNodes[id]
       setNodes((prevNodes) => prevNodes.filter((node) => node._id !==id));
       dispatch(DeleteNode(id))
-      console.log('deleted',id)
+      // console.log('deleted',id)
     }
   //<----------------------------------------------------Drawer----------------------------------->
   const [state, setState] =useState({right: false });
@@ -133,7 +133,7 @@ const HandleAdd=(newNode)=>{
     }
     const HandleEdit = (nodeList,node) => {//to verify if node saved
       setEdit({ ...edit,  right: true  });
-      console.log("Clicked node _id:", node._id);
+      // console.log("Clicked node _id:", node._id);
     };
  const [nodeList,setNodeList] = useState([]) //for saving list nodes for the workfflow
  const [dragnode, setNode]=useState({}) //for save the newnode
@@ -222,6 +222,7 @@ const HandleAdd=(newNode)=>{
              handleDetails={toggleDetail('right', true)}></SpeedDialButton>
             <MiniMap/>
             <Controls />
+            <DownloadButton />
           </ReactFlow>
         </div>
        </ReactFlowProvider>

@@ -37,6 +37,8 @@ const [listParam,setListparam]=useState({})
       setForm({...dragnode})
     }
     }, [dragnode]);
+    console.log('paraaaaaaaam',param)
+    console.log('paraaaaaaaam',params)
    useEffect(() => {
     if(node._id){ //if save node
         handleNodeCreation(node._id)
@@ -78,11 +80,10 @@ const [listParam,setListparam]=useState({})
         {loading? <CircularProgress/>:
        <>
        {param.length>0?<>
-        {params?.map(param=><div key={param._id}>
+        {params?.map((param,index)=><div key={param._id}>
           <div>Fill params in order</div>
-          <div style={{marginTop:'10px'}}>{param.nom} :</div>
-          <div style={{ display: 'flex', alignItems: 'center',marginTop:'10px' }}>
-          
+          <div style={{marginTop:'10px'}}>{index+1} {param.nom} :</div>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
           <InputField
             type="text"
             variant='standard'

@@ -15,11 +15,11 @@ import AvatarUI from '../../components/AvatarUI';
 import BackdropItem from '../../components/controls/BackdropItem';
 import CopyRights from '../../components/controls/CopyRights';
 import Header from '../antDesign/Header/Header';
+import { btStyle } from '../../components/Styles';
 const theme = createTheme();
-const btStyle={ margin:'0px 0',backgroundColor:'#1e81b0'}
 const ResetPage=()=> {
     const [email, setEmail] = useState('');
-    const {isLoading}=useSelector(state=>state.auth)
+    const {isLoading,errors}=useSelector(state=>state.auth)
     // const { token } = useParams();
     // console.log(token)
     const dispatch=useDispatch()
@@ -63,7 +63,8 @@ const ResetPage=()=> {
            label="Email Adress" 
            type="text"  
            onChangeHandler={onChangeHandler} 
-           autoFocus="autofocus" >
+           autoFocus="autofocus"
+           errors={errors? errors.email:null} >
            </InputField>
            <ButtonSubmit 
            type="submit" 
@@ -85,5 +86,5 @@ const ResetPage=()=> {
     </React.Fragment>
   ) 
 }
-export default connect(null)(ResetPage);
+export default ResetPage;
 

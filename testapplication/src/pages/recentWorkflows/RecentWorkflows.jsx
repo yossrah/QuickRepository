@@ -19,7 +19,7 @@ function RecentWorkflows() {
        }, []);
        console.log('flows',flows)
        const HandleNavigate=(_id)=>{
-        navigate(`/layoutAnt/editflow/${_id}`)
+        navigate(`/layout/editflow/${_id}`)
        }
   return (
     <React.Fragment>

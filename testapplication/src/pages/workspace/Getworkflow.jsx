@@ -1,12 +1,10 @@
 import React,{ useState, useRef, useCallback,useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import { GetFlow, GetCode } from '../../redux/actions/flowActions';
+import { useSelector,useDispatch } from 'react-redux';
+import { useParams,useNavigate } from 'react-router-dom';
+import { GetFlow, GetCode,UpdateFlow } from '../../redux/actions/flowActions';
 import Trigger from '../nodes/Trigger';
 import BackdropItem from '../../components/controls/BackdropItem';
 import Swipeable from '../../components/swipeable';
-import { useNavigate } from 'react-router-dom';
 import ShareCode from '../codePen/ShareCode';
 import Details from '../workFlDetails/details';
 import ReactFlow, {
@@ -23,9 +21,7 @@ import CodePen from '../codePen/CodePen';
 import 'reactflow/dist/style.css';
 import '../nodes/index.css'
 import AddNode from '../workflow/CreateNode';
-import { GetNode } from '../../redux/actions/nodeActions';
-import AddFlow from '../workflow/CreateFlow';
-import { UpdateFlow } from '../../redux/actions/flowActions';
+import { GetNode ,ResetNode} from '../../redux/actions/nodeActions';
 import DownloadButton from '../../components/controls/DownloadButton';
 import CustomNode from './CustomNode';
 import Modal from '../../components/controls/Modal';
@@ -33,10 +29,9 @@ const nodeTypes = {
   custom: CustomNode,
   
 };
-let id = 1;
-const getId = () => `${id++}`;
-
-const snapGrid = [25, 25];
+let id = 20; //initialize the id >> numbr of nodes that can be in a flow
+ const getId = () => `${id++}`;
+const snapGrid = [25, 25]; //for the snapshot
 const defaultEdgeOptions = {
   animated: true,
   type: 'smoothstep',
@@ -55,30 +50,13 @@ const Getworkflow = () => {
     const [add, setAdd] =useState({right: false });
     const [save, setSave] =useState({right: false });
     const [detail, setdetail] =useState({right: false });
-    const [newcode, setCode] =useState({right: false });
     //************************************************************************************ */
-    const toggleDrawer = (anchor, open) => (event) => {
-      if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
-        return;
-      }
-      setState({ ...state, [anchor]: open });
-    };
     const onClose=()=>{
       setState({ ...state, 'right': false });
     }
   
     const onCloseCreate=()=>{
       setAdd({ ...add, 'right': false });
-    }
-    const toggleCreate = (anchor, open,) => (event) => {
-      if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
-        return;
-      }
-  
-        setAdd({ ...add, [anchor]: open });
-    };
-    const onCloseSave=()=>{
-      setSave({ ...save, 'right': false });
     }
     const toggleSave = (anchor, open,) => (event) => {
       if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -87,25 +65,6 @@ const Getworkflow = () => {
   
         setSave({ ...save, [anchor]: open });
     };
-    const onCloseCode=()=>{
-      setCode({ ...newcode, 'right': false });
-    }
-    const toggleCode = (anchor, open,) => (event) => {
-      if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
-        return;
-      }
-        setCode({ ...newcode, [anchor]: open });
-    };
-  const [share, setShare] =useState({right: false });
-  const toggleShare = (anchor, open) => (event) => {
-    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
-      return;
-    }
-    setShare({ ...share, [anchor]: open });
-  };
-  const onCloseShare=()=>{
-    setShare({ ...share, 'right': false });
-  }
   const toggleDetail = (anchor, open) => (event) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
@@ -118,9 +77,12 @@ const Getworkflow = () => {
     //<----------------------------------------------------Drawer------------------------------------>
     
 const dispatch=useDispatch()
+const [form,setForm]=useState({})
 const {id}=useParams()
 const {flow}=useSelector((state)=>state.flows)
 const {code}=useSelector((state)=>state.flows)
+const {isloading}=useSelector(state=>state.nodes)
+  const {node}=useSelector(state=>state.nodes)
 const {loader}=useSelector((state)=>state.flows)
   const initialNodes = [
   ];
@@ -130,24 +92,64 @@ const {loader}=useSelector((state)=>state.flows)
     setState({ ...state, 'right': true })
   }
   useEffect(() => {
+    if(node._id){
+        setInitialNodes((prevNodes)=> [...prevNodes, node])
+        setNodes((nds)=> nds.concat(getInitialNodes))
+        if (!form.nodesList.includes(node._id)) {
+        setForm((prevForm) => ({
+          ...prevForm,
+          'nodesList': [...prevForm.nodesList, node._id], // Adding node._id to form nodesList
+          // 'edgeList':  edges
+        }));
+        }
+      }
+    }, [node._id]);
+  useEffect(() => {
     dispatch(GetFlow(id));
     }, [id]);
-  // console.log('initial',flow)
+  //  console.log('initialNodeeees',getInitialNodes)
+
+  
+  const onChangeHandler=(e)=>{
+      setForm({
+       ...form,[e.target.name]:e.target.value
+      })
+      }
+      const handleUpdateFlow = (form,id,navigate,edges) => {
+       
+          form.edgeList = edges
+       
+        dispatch(UpdateFlow(form, id, navigate));
+        dispatch(ResetNode());
+      };
+      
+      // const onSubmit=(e)=>{
+      //   e.preventDefault()
+      //   console.log('submit ', form)
+      //   dispatch(UpdateFlow(form,flow._id,navigate))
+        
+      //   onClose()
+      // }
+      
   const [getInitialNodes,setInitialNodes] = useState(initialNodes)
   const [getInitialEdges,setInitialEdges] = useState(initialEdges)
   useEffect(() => {
     if(flow.nodesList){
         setInitialNodes(flow.nodesList)
         setInitialEdges(flow.edgeList)
+        // setForm({...flow})
+        setForm({...form,'nodesList':flow.nodesList,'edgeList':flow.edgeList})
       }
     }, [flow.nodesList]);
+    // console.log('fooooooooooooormUpdate',)
     useEffect(() => {
       if(getInitialNodes.length>1){
         console.log('length',getInitialNodes.length)
-          setNodes((nds)=> nds.concat(getInitialNodes))
-          setEdges((nds)=> nds.concat(getInitialEdges))
+        setNodes((nds)=> nds.concat(getInitialNodes))
+        setEdges((nds)=> nds.concat(getInitialEdges))
         }
       }, [getInitialNodes]);
+      
       const handleNodeCreation = (newNodeId) => {
         if (!nodeList.includes(newNodeId)) {
           setNodeList((prevNodeList) => [...prevNodeList, newNodeId]);
@@ -157,8 +159,8 @@ const {loader}=useSelector((state)=>state.flows)
   const HandleAdd=(newNode)=>{
         setAdd({ ...add, right: true });
           }
-  const [nodeList,setNodeList] = useState([])
-  const [edgeList,setEdgeList] = useState([])
+   const [nodeList,setNodeList] = useState([])
+  // const [edgeList,setEdgeList] = useState([])
   // console.log('getInitialNodes',getInitialNodes)
   // console.log('getInitialedgees',edgeList)
   const [dragnode, setNode]=useState({})
@@ -171,8 +173,8 @@ const {loader}=useSelector((state)=>state.flows)
     event.preventDefault();
     event.dataTransfer.dropEffect = 'move';
   }, []);
-  
-  console.log('Codes:', code);
+   console.log('Foooooooooooooorm:', form);
+   console.log('eeeeeeeeeeeeeeeeeeeeeeeedeges',edges)
   const onDrop = useCallback(
     (event) => {
       event.preventDefault();
@@ -188,7 +190,7 @@ const {loader}=useSelector((state)=>state.flows)
       });
       const component = JSON.parse(type);
       const newNode = {
-        id: getId(),
+        id: getId() + 1, //+1 otherwise it took the last node place
         position: position,
         code: component.code,
         icon: component.icon,
@@ -199,18 +201,17 @@ const {loader}=useSelector((state)=>state.flows)
         targetPosition: Position.Left,
         type: component.type,
       };
-  
-      // Check if the node with the same ID already exists in the nodes state
-      const nodeExists = nodes.some((node) => node.id === newNode.id);
-      if (!nodeExists) {
-        // If the node doesn't exist, open the drawer to save the new node
-        HandleAdd(newNode);
-      }
-  
-      // Concatenate the new node with the existing nodes
       setNodes((prevNodes) => prevNodes.concat(newNode));
+      // Check if the node with the same ID already exists in the nodes state
+       HandleAdd(newNode); //when drag open the drawer to save the node
+      //  setNodes((nds) => nds.concat(newNode)); //concat the new node to the listnodes
+       setNode(newNode)
+      // console.log('newNode',newNode)
+       // Remove the "Start" node from the nodes list
+      //  setNodes((prevNodes) => prevNodes.filter((node) => node.id !== '0'));
+    
     },
-    [reactFlowInstance, nodes]
+    [reactFlowInstance,]
   );
   // console.log('nodes',nodes)
   // console.log('edgesssssList',edgeList)
@@ -239,19 +240,19 @@ const {loader}=useSelector((state)=>state.flows)
             attributionPosition="bottom-left"
             defaultEdgeOptions={defaultEdgeOptions}
             >
-             <Background color='#b0dcdd'/>
-             <SpeedDialButton handleSave={toggleSave('right'
-             , true)} 
+            <Background color='#b0dcdd'/>
+            <SpeedDialButton handleSave={toggleSave('right', true)} 
              handleNavigate={()=>HandleCode(id)} 
              handleShare={HandleShare}
-             handleDetails={toggleDetail('right', true)}></SpeedDialButton>
+             handleDetails={toggleDetail('right', true)}
+             handleUpdate={()=>handleUpdateFlow(form,flow._id,navigate,edges)}></SpeedDialButton>
            <MiniMap/>
-            <Controls />
+           <Controls />
             <DownloadButton />
-          </ReactFlow>
-        </div>
+           </ReactFlow>
+          </div>
         <Trigger></Trigger>
-      </ReactFlowProvider>
+       </ReactFlowProvider>
       <Swipeable key='right'
       open={state['right']} 
       anchor='right'
@@ -262,12 +263,10 @@ const {loader}=useSelector((state)=>state.flows)
       anchor='right'
       onClose={onCloseCreate}
       >
-      <AddNode 
-      onClose={()=>onCloseCreate() }
-       dragnode={dragnode} handleNodeCreation={handleNodeCreation} nodeList={nodeList} 
-       ></AddNode>
-       
-  
+        <AddNode 
+        onClose={()=>onCloseCreate() }
+        dragnode={dragnode} handleNodeCreation={handleNodeCreation} nodeList={flow.nodeList}
+        ></AddNode>
       </Swipeable>
       <Modal title={"Code"} id={flow._id} openPopup={openModal} setOpenPopup={setOpenModal}>
        <CodePen id={flow._id} HandleClose={HandleClose}/>
@@ -284,6 +283,7 @@ const {loader}=useSelector((state)=>state.flows)
      onClose={onCloseDetail}>
      <Details onClose={onCloseDetail}/>
     </Swipeable>
+    <BackdropItem open={isloading}></BackdropItem>
     <BackdropItem open={loader}></BackdropItem>
     </div>
   );

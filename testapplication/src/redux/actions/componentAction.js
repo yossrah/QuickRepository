@@ -46,14 +46,14 @@ export const CreateAction = (form) => async (dispatch) => {
         type: 'SET_ACTION_REQUEST',
         })
     await axios.get(`/action/getActionPaginated?page=${page}&limit=${limit}`).then(res=>{
-         console.log('reeeeeeeeeeeeeees',res.data)
+        //  console.log('reeeeeeeeeeeeeees',res.data)
          dispatch({
              type:'SET_ACTIONSPAGINATED_SUCCESS',
              payload:{ components:res?.data.data,
                 previous:res?.data.previous,
                 next:res?.data.next}
   })
-         console.log('----------------------35')
+        //  console.log('----------------------35')
      }).catch(err=>{
          dispatch({
              type:'SET_ACTION_FAILURE',

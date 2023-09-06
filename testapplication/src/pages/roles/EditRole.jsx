@@ -9,7 +9,8 @@ import Title from '../../components/Title';
 import InputField from '../../components/InputField';
 import AvatarUI from '../../components/AvatarUI';
 import AddIcon from '@mui/icons-material/Add';
-
+import CloseIcon from '@mui/icons-material/Close';
+import {IconButton} from '@mui/material';
 const theme = createTheme();
 const btStyle={ margin:'20px 0',backgroundColor:'#1e81b0'}
 const EditRole=({id,onClose})=> {
@@ -43,6 +44,9 @@ const EditRole=({id,onClose})=> {
     <ThemeProvider theme={theme}>
     <Grid  container component="main" sx={{ height: '100vh',width:'300px' }}>
        <Grid item xs={12} sm={8} md={12} component={Paper}  square>
+       <IconButton onClick={()=>onClose()}>
+      <CloseIcon/>
+      </IconButton>
          <Box
          sx={{
            my: 8,

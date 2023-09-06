@@ -35,8 +35,9 @@ function SaveComment() {
    
   }
   return (
-   
-    <div style={{ marginLeft:'30px',marginTop:'30px' }}>
+    <div className="centered-container" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh',
+    marginLeft:'300px', }}>
+    <div style={{ width:'600px' }}>
     <Title title="Issue" caption="any bugs or something wont wrong?" color="#0d47a1"></Title>
       <Box component="form" noValidate sx={{ mt: 1 }} onSubmit={onSubmit}>
        <Stack direction="row" spacing={2} alignItems="center" mb={2}>
@@ -51,11 +52,11 @@ function SaveComment() {
       <TextAreaField name="text" 
       onChangeHandler={onChangeHandler}  /></Box>
       <ButtonSubmit type="submit" style={btStyle} variant="contained" title="Save"></ButtonSubmit>
-      <ButtonSubmit  style={btStyle} variant="contained" onClick={()=>navigate('/layoutAnt/viewcomments')} title="View all"></ButtonSubmit>
+      <ButtonSubmit  style={btStyle} variant="contained" onClick={()=>navigate('/layout/viewcomments')} title="View all"></ButtonSubmit>
       </Box>
       <BackdropItem open={isLoading} />
       </div>
-    
+      </div>
   )
 }
 

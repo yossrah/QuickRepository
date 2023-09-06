@@ -26,9 +26,9 @@ const initialState={
       case 'SET_ACTION_SUCCESS':
         return {
           ...state,
-           component:action.payload,
-           components:state.components.concat(action.payload),
-           loading: false,
+          component:action.payload,
+          components:state.components.concat(action.payload),
+          loading: false,
         };
         
       case 'SET_ACTIONS_SUCCESS':

@@ -22,6 +22,11 @@ export const CreateNode = (form) => async (dispatch) => {
             })
         }) 
       }
+      export const ResetNode=()=>async dispatch=>{
+        dispatch({
+            type: 'RESET_NODE',
+            })
+      }
   export const GetNodes=()=>async dispatch=>{
     dispatch({
         type: 'SET_NODE_REQUEST',
