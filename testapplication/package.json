@@ -63,8 +63,8 @@
     ]
   },
   "proxy": "http://api:3001",
-  
   "devDependencies": {
+    "jest": "^29.6.4",
     "tailwindcss": "^3.3.2"
   }
 }
