@@ -50,12 +50,6 @@
       "react-app/jest"
     ]
   },
-  "babel": {
-    "presets": [
-      "@babel/preset-env",
-      "@babel/preset-react"
-    ]
-  },
   "browserslist": {
     "production": [
       ">0.2%",
