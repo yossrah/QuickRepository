@@ -51,7 +51,10 @@
     ]
   },
   "babel": {
-    "presets": ["@babel/preset-env", "@babel/preset-react"]
+    "presets": [
+      "@babel/preset-env",
+      "@babel/preset-react"
+    ]
   },
   "browserslist": {
     "production": [
@@ -68,6 +71,7 @@
   "proxy": "http://api:3001",
   "devDependencies": {
     "@babel/preset-react": "^7.22.15",
+    "babel-core": "^7.0.0-bridge.0",
     "jest": "^29.6.4",
     "tailwindcss": "^3.3.2"
   }
